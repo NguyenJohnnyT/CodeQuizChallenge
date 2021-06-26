@@ -28,6 +28,33 @@ var questAndAns = {
     'Question5': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],  
 }
 
+//Create an array of the property names in questAndAns.  The program will randomly select from this array to display a random question.
+var currentQuestions = Object.getOwnPropertyNames(questAndAns);
+
+//Array of numbers to display answers on random answer buttons
+var chooseAButton = ['btn1', 'btn2', 'btn3', 'btn4'];
+
+console.log(currentQuestions);
+function displayQuestion () {
+    //Randomly choose an index of currentQuestions to display the appropriate question.
+    var indexCQ = math.floor(math.random() * currentQuestions.length)
+    currentQuestion = currentQuestions[indexCQ]
+    qDisplay.textContent = currentQuestion
+    //Randomly choose a button to display an answer
+    chooseAButtonShuffle(chooseAButton);
+    for (i = 0; i < chooseAButton.length; i++) {
+
+    }
+};
+
+//credit https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function chooseAButtonShuffle(array) { //swaps indexes around
+    for (let i = array.length - 1; i > 0; i--) { // starts with max index
+        var j = Math.floor(Math.random() * (i+1)); //chooses a random index
+        [array[i], array[j]] = [array[j], array[i]]; //swaps those two numbers
+    } //results in an array that is shuffled
+};
+
 //When user clicks a button, verifies if the answer is correct or not.  Then should call another function that changes the score and another function that changes the question.
 function userClickBtn (event) {
     var element = event.target;
@@ -45,8 +72,10 @@ function checkAnswer(buttonID) {
     if (presstedBtn.textContent === questAndAns[questionDisplay][0]) { //checking if the string of the answer matches with obj.property[0].  Correct answer is always indexed at 0.
         console.log('Correct!')
     } else {console.log('Incorrect')}
-
 }
+
+
 
 /* Add event listener to displaybox and execute a function when the user toggles the appropriate box */
 document.addEventListener('click', userClickBtn);
+
