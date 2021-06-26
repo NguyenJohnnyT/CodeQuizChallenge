@@ -1,9 +1,17 @@
+//Assigning variables to HTML elements
+
+var scoreCount = document.getElementById('scoreCountdown')
+var qDisplay = document.getElementById('questionDisplay')
+var but1 = document.getElementById('btn1');
+var but2 = document.getElementById('btn2');
+var but3 = document.getElementById('btn3');
+var but4 = document.getElementById('btn4');
+var hsDisplay = document.getElementById('highScoreDisplay')
+
 /*
 Need an object that the program can randomly iterate through to display the property and its contents.
 
-set an object that records all questions and and their array of possible answers --> obj = {question: [answer1, answer2, answer3, answer4]}
-
-to differentiate between right and wrong answers, we can have all correct answers be index of 1 for the object property
+set an object that records all questions and and their array of possible answers --> obj = {Question 1: [Correct Answer, Wrong answer1, Wrong answer2, Wrong answer3], ...}
 */
 
 var questAndAns = {
@@ -14,6 +22,6 @@ var questAndAns = {
     'Question3': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'], 
 
     'Question4': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'], 
-    
+
     'Question5': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],  
 }

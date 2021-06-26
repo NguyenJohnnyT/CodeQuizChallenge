@@ -40,8 +40,12 @@ h1 {
     min-width: 400px;
 }
 
-#scoreCountdown{
+#scoreHeader{
     margin:40px;
+}
+
+#scoreCountdown {
+    font-size: 30px;
 }
 
 /*display elements */
@@ -76,3 +80,6 @@ h1 {
     text-align: left;
 }
 
+#highScoreDisplay {
+    display: none;
+}
