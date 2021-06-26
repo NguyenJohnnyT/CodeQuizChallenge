@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+header {
+    height: 100px;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+
+    border: 2px solid black;
+
+}
+
+#buttonHS {
+    float:left;
+    margin: 40px;
+}
+
+#scoreCountdown{
+    float:right;
+    margin:40px;
+}
+
+#headerImg {
+    min-width: 400px;
+}
