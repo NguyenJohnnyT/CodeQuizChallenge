@@ -43,6 +43,7 @@ h1 {
 
 #buttonStart {
     width: 40px;
+    disabled: false;
 }
 
 #headerImg {

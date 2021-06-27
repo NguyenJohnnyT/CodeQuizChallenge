@@ -1,6 +1,7 @@
 //Assigning variables to HTML elements
 var scoreCount = document.getElementById('scoreCountdown');
 var qDisplay = document.getElementById('questionDisplay');
+var startBtn = document.getElementById('buttonStart')
 // var answerBox = document.getElementById('answerBox');
 // var but1 = document.getElementById('btn1');
 // var but2 = document.getElementById('btn2');
@@ -8,6 +9,7 @@ var qDisplay = document.getElementById('questionDisplay');
 // var but4 = document.getElementById('btn4');
 var hsDisplay = document.getElementById('highScoreDisplay');
 var listHS = document.getElementById('listHighScores');
+
 
 
 /*
@@ -39,7 +41,7 @@ var chooseAButton = ['btn1', 'btn2', 'btn3', 'btn4'];
 function displayQuestion () {
     //Randomly choose an index of currentQuestions to display the appropriate question.
     var indexCQ = Math.floor(Math.random() * currentQuestions.length)
-    currentQuestion = currentQuestions[indexCQ];
+    currentQuestion = currentQuestions.splice(indexCQ, 1);
     var currentAns = [] //array of answers for currentQuestion
     for (i = 0; i < questAndAns[currentQuestion].length; i++) {
         //making a copy of the answers so displayAnswers doesn't pop the object property's value (an array)
@@ -76,6 +78,7 @@ function userClickBtn (event) {
         var buttonID = element.getAttribute('id');
         checkAnswer(buttonID)
     } else if (element.matches('#buttonStart')) {
+        startBtn.disabled = true;
         startTimer();
     }
 };
@@ -91,7 +94,7 @@ function checkAnswer(buttonID) {
 
 //declare timerRunning so user can't click start multiple times.
 var timerRunning = false;
-scoreCountdown = 60; //time left shown on webpage.
+scoreCountdown = 2; //time left shown on webpage.
 
 function startTimer () {
     if (timerRunning === false) {
@@ -108,10 +111,20 @@ function startTimer () {
 function checkIfZero () {
     if (scoreCountdown === 0) {
         clearInterval(timer)
+        gameEnd()
     }
+}
+
+function gameEnd () { //resets the board
+    timerRunning = false;
+    scoreCountdown = 2;
+    startBtn.disabled = false;
+    currentQuestions = Object.getOwnPropertyNames(questAndAns);
+    user = prompt('Game Over! Please enter your initials to submit into the scoreboard')
+
 }
 
 /* Add event listener to displaybox and execute a function when the user toggles the appropriate box */
 document.addEventListener('click', userClickBtn);
 
-// displayQuestion()
+displayQuestion()
