@@ -17,13 +17,6 @@ header {
     justify-content: space-between;
 }
 
-.btn {
-    min-width: 300px;
-    margin-left: 50px;
-    margin-right: 50px;
-    margin-bottom: 5px;
-}
-
 h1 {
     border: 2px solid black;
 }
@@ -95,7 +88,11 @@ h2 {
 }
 
 .btn {
-    text-align: left;
+    min-width: 300px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 5px;
+    text-align: center;
 }
 
 #highScoreDisplay {

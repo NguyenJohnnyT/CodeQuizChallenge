@@ -4,10 +4,10 @@ var questCount = document.getElementById('questionCountdown')
 var qDisplay = document.getElementById('questionDisplay');
 var startBtn = document.getElementById('buttonStart')
 // var answerBox = document.getElementById('answerBox');
-// var but1 = document.getElementById('btn1');
-// var but2 = document.getElementById('btn2');
-// var but3 = document.getElementById('btn3');
-// var but4 = document.getElementById('btn4');
+var but1 = document.getElementById('btn1');
+var but2 = document.getElementById('btn2');
+var but3 = document.getElementById('btn3');
+var but4 = document.getElementById('btn4');
 var hsDisplay = document.getElementById('highScoreDisplay');
 var listHS = document.getElementById('listHighScores');
 
@@ -45,6 +45,10 @@ function startGame () {
     questCount.textContent = questionsAsked
     scoreCountdown = 60;
     questionsAsked = 5;
+    btn1.disabled = false;
+    btn2.disabled = false;
+    btn3.disabled = false;
+    btn4.disabled = false;
     startTimer();
     if (questionsAsked > 0){
         displayQuestion()
@@ -153,17 +157,31 @@ function checkIfZero () {
 }
 
 function gameEnd () { //resets the board
+    pageLoad()
+    timerRunning = false;
+    startBtn.disabled = false;
+    currentQuestions = Object.getOwnPropertyNames(questAndAns);
     if (scoreCountdown <= 0) {
         user = alert('Gameover!  That was rough!  Please try again!')
     } else {
         user = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the scoreboard')
     }
-    timerRunning = false;
-    startBtn.disabled = false;
-    currentQuestions = Object.getOwnPropertyNames(questAndAns);
+}
+
+function pageLoad () {
+    qDisplay.textContent = 'Click'
+    btn1.disabled = true;
+    btn1.textContent = 'Start'
+    btn2.disabled = true;
+    btn2.textContent = 'to'
+    btn3.disabled = true;
+    btn3.textContent = 'Play'
+    btn4.disabled = true;
+    btn4.textContent = 'Game!'
 }
 
 /* Add event listener to displaybox and execute a function when the user toggles the appropriate box */
 document.addEventListener('click', userClickBtn);
 
 // displayQuestion()
+pageLoad();
