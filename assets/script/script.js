@@ -12,7 +12,7 @@ var hsDisplay = document.getElementById('highScoreDisplay');
 var listHS = document.getElementById('listHighScores');
 
 //declare timerRunning so user can't click start multiple times.
-scoreCountdown = 2; //time left shown on webpage.
+scoreCountdown = 60; //time left shown on webpage.
 questionsAsked = 5 //how many questions the user will be asked
 
 /*
@@ -41,6 +41,21 @@ var currentQuestions = Object.getOwnPropertyNames(questAndAns);
 //Array of strings matching button IDs.  Used to display answers randomly for function chooseAButtonShuffle(array)
 var chooseAButton = ['btn1', 'btn2', 'btn3', 'btn4'];
 
+function startGame () {
+    questCount.textContent = questionsAsked
+    scoreCountdown = 60;
+    questionsAsked = 5;
+    startTimer();
+    if (questionsAsked > 0){
+        displayQuestion()
+    };
+}
+
+/**
+ * Show the user a question.
+ * Functions:displayQuestion, chooseAButtonShuffle, displayAnswers
+ */
+
 function displayQuestion () {
     //Randomly choose an index of currentQuestions to display the appropriate question.
     var indexCQ = Math.floor(Math.random() * currentQuestions.length)
@@ -56,7 +71,6 @@ function displayQuestion () {
     displayAnswers(chooseAButton, currentAns);
 };
 
-//credit https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function chooseAButtonShuffle(array) { //swaps indexes around
     for (let i = array.length - 1; i > 0; i--) { // starts with max index
         var j = Math.floor(Math.random() * (i+1)); //chooses a random index
@@ -72,35 +86,50 @@ function displayAnswers (chooseAButton, currentAns) {
         button.textContent = buttonAnswer; //displays popped element
     })
 }
-
-//When user clicks a button, verifies if the answer is correct or not.  Then should call another function that changes the score and another function that changes the question.
+/** Button click events.
+ * Functions: userClickBtn
+ */
 function userClickBtn (event) {
+    //When user clicks a button, verifies if the answer is correct or not. Then should call another function that changes the score and another function that changes the question.
     var element = event.target;
     if (element.matches('.btn')) {
         //obtains the ID of the button that was clicked.
         var buttonID = element.getAttribute('id');
         checkAnswer(buttonID)
-    } else if (element.matches('#buttonStart')) {
+        if (startBtn.disabled === true && questionsAsked > 0) {
+            displayQuestion();
+        }
+    } else if (element.matches('#buttonStart') && startBtn.disabled === false) {
         startBtn.disabled = true;
-        startTimer();
+        startGame();
     }
 };
 
+/** 
+ * checks the answer that the User selected.
+ * Functions: checkAnswer
+*/
 //The browser will compare the answer selected with the array of answers corrosponding with questAndAns property.
 function checkAnswer(buttonID) {
     var questionDisplay = qDisplay.textContent;
     var pressedBtn = document.getElementById(buttonID);
-    if (pressedBtn.textContent === questAndAns[questionDisplay][0]) { //checking if the string of the answer matches with obj.property[0].  Correct answer is always indexed at 0.
+    if (pressedBtn.textContent === questAndAns[questionDisplay][0]) { 
+        //checking if the string of the answer matches with obj.property[0].  Correct answer is always indexed at 0.
         console.log('Correct!')
         questionsAsked--;
+        questCount.textContent = questionsAsked
     } else {
         console.log('Incorrect');
         questionsAsked--;
+        questCount.textContent = questionsAsked
         scoreCountdown -= 5;
     }
 }
 
-//Timer and endgame
+/**
+ * Display the score, 
+ * functions: startTimer, checkIfZero, gameEnd
+ */
 var timerRunning = false; 
 
 function startTimer () {
@@ -117,14 +146,14 @@ function startTimer () {
 }
 
 function checkIfZero () {
-    if (scoreCountdown === 0 || questionsAsked === 0) {
+    if (scoreCountdown <= 0 || questionsAsked === 0) {
         clearInterval(timer)
         gameEnd()
     }
 }
 
 function gameEnd () { //resets the board
-    if (scoreCountdown === 0) {
+    if (scoreCountdown <= 0) {
         user = alert('Gameover!  That was rough!  Please try again!')
     } else {
         user = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the scoreboard')
@@ -132,8 +161,6 @@ function gameEnd () { //resets the board
     timerRunning = false;
     startBtn.disabled = false;
     currentQuestions = Object.getOwnPropertyNames(questAndAns);
-    scoreCountdown = 2;
-    questionsAsked = 5;
 }
 
 /* Add event listener to displaybox and execute a function when the user toggles the appropriate box */
