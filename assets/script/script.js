@@ -28,23 +28,27 @@ var questAndAns = {
     'Question5': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],  
 }
 
+console.log(questAndAns)
+
 //Create an array of the property names in questAndAns.  The program will randomly select from this array to display a random question.
 var currentQuestions = Object.getOwnPropertyNames(questAndAns);
 
-//Array of numbers to display answers on random answer buttons
+//Array of strings matching button IDs.  Used to display answers randomly for function chooseAButtonShuffle(array)
 var chooseAButton = ['btn1', 'btn2', 'btn3', 'btn4'];
 
-console.log(currentQuestions);
 function displayQuestion () {
     //Randomly choose an index of currentQuestions to display the appropriate question.
-    var indexCQ = math.floor(math.random() * currentQuestions.length)
-    currentQuestion = currentQuestions[indexCQ]
-    qDisplay.textContent = currentQuestion
+    var indexCQ = Math.floor(Math.random() * currentQuestions.length)
+    currentQuestion = currentQuestions[indexCQ];
+    var currentAns = [] //array of answers for currentQuestion
+    for (i = 0; i < questAndAns[currentQuestion].length; i++) {
+        //making a copy of the answers so displayAnswers doesn't pop the object property's value (an array)
+        currentAns[i] = questAndAns[currentQuestion][i] 
+    }
+    qDisplay.textContent = currentQuestion;
     //Randomly choose a button to display an answer
     chooseAButtonShuffle(chooseAButton);
-    for (i = 0; i < chooseAButton.length; i++) {
-
-    }
+    displayAnswers(chooseAButton, currentAns);
 };
 
 //credit https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
@@ -54,6 +58,15 @@ function chooseAButtonShuffle(array) { //swaps indexes around
         [array[i], array[j]] = [array[j], array[i]]; //swaps those two numbers
     } //results in an array that is shuffled
 };
+
+function displayAnswers (chooseAButton, currentAns) {
+    //takes array of buttons, array of answers, pops the array into each button element.
+    chooseAButton.forEach(function (element) {
+        button = document.getElementById(element); //assign button to  HTML element
+        var buttonAnswer = currentAns.pop(); //pops currentAns array
+        button.textContent = buttonAnswer; //displays popped element
+    })
+}
 
 //When user clicks a button, verifies if the answer is correct or not.  Then should call another function that changes the score and another function that changes the question.
 function userClickBtn (event) {
@@ -68,8 +81,8 @@ function userClickBtn (event) {
 //The browser will compare the answer selected with the array of answers corrosponding with questAndAns property.
 function checkAnswer(buttonID) {
     var questionDisplay = qDisplay.textContent;
-    var presstedBtn = document.getElementById(buttonID);
-    if (presstedBtn.textContent === questAndAns[questionDisplay][0]) { //checking if the string of the answer matches with obj.property[0].  Correct answer is always indexed at 0.
+    var pressedBtn = document.getElementById(buttonID);
+    if (pressedBtn.textContent === questAndAns[questionDisplay][0]) { //checking if the string of the answer matches with obj.property[0].  Correct answer is always indexed at 0.
         console.log('Correct!')
     } else {console.log('Incorrect')}
 }
@@ -79,3 +92,4 @@ function checkAnswer(buttonID) {
 /* Add event listener to displaybox and execute a function when the user toggles the appropriate box */
 document.addEventListener('click', userClickBtn);
 
+displayQuestion()
