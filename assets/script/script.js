@@ -1,5 +1,6 @@
 //Assigning variables to HTML elements
 var scoreCount = document.getElementById('scoreCountdown');
+var questCount = document.getElementById('questionCountdown')
 var qDisplay = document.getElementById('questionDisplay');
 var startBtn = document.getElementById('buttonStart')
 // var answerBox = document.getElementById('answerBox');
@@ -10,7 +11,9 @@ var startBtn = document.getElementById('buttonStart')
 var hsDisplay = document.getElementById('highScoreDisplay');
 var listHS = document.getElementById('listHighScores');
 
-
+//declare timerRunning so user can't click start multiple times.
+scoreCountdown = 2; //time left shown on webpage.
+questionsAsked = 5 //how many questions the user will be asked
 
 /*
 Need an object that the program can randomly iterate through to display the property and its contents.
@@ -89,14 +92,19 @@ function checkAnswer(buttonID) {
     var pressedBtn = document.getElementById(buttonID);
     if (pressedBtn.textContent === questAndAns[questionDisplay][0]) { //checking if the string of the answer matches with obj.property[0].  Correct answer is always indexed at 0.
         console.log('Correct!')
-    } else {console.log('Incorrect')}
+        questionsAsked--;
+    } else {
+        console.log('Incorrect');
+        questionsAsked--;
+        scoreCountdown -= 5;
+    }
 }
 
-//declare timerRunning so user can't click start multiple times.
-var timerRunning = false;
-scoreCountdown = 2; //time left shown on webpage.
+//Timer and endgame
+var timerRunning = false; 
 
 function startTimer () {
+    //check if timer is running already
     if (timerRunning === false) {
         timerRunning = true;
         scoreCount.textContent = scoreCountdown;
@@ -109,22 +117,26 @@ function startTimer () {
 }
 
 function checkIfZero () {
-    if (scoreCountdown === 0) {
+    if (scoreCountdown === 0 || questionsAsked === 0) {
         clearInterval(timer)
         gameEnd()
     }
 }
 
 function gameEnd () { //resets the board
+    if (scoreCountdown === 0) {
+        user = alert('Gameover!  That was rough!  Please try again!')
+    } else {
+        user = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the scoreboard')
+    }
     timerRunning = false;
-    scoreCountdown = 2;
     startBtn.disabled = false;
     currentQuestions = Object.getOwnPropertyNames(questAndAns);
-    user = prompt('Game Over! Please enter your initials to submit into the scoreboard')
-
+    scoreCountdown = 2;
+    questionsAsked = 5;
 }
 
 /* Add event listener to displaybox and execute a function when the user toggles the appropriate box */
 document.addEventListener('click', userClickBtn);
 
-displayQuestion()
+// displayQuestion()
