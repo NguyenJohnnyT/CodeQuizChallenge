@@ -89,22 +89,26 @@ function checkAnswer(buttonID) {
     } else {console.log('Incorrect')}
 }
 
-//declare timerRunning so user can't 
+//declare timerRunning so user can't click start multiple times.
 var timerRunning = false;
-scoreCountdown = 60;
+scoreCountdown = 60; //time left shown on webpage.
 
 function startTimer () {
     if (timerRunning === false) {
         timerRunning = true;
         scoreCount.textContent = scoreCountdown;
-        setInterval(function () {
-            scoreCountdown -= 1;
+        timer = setInterval(function () {
+            scoreCountdown--;
             scoreCount.textContent = scoreCountdown;
+            checkIfZero();
         }, 1000)
     }
+}
 
-
-
+function checkIfZero () {
+    if (scoreCountdown === 0) {
+        clearInterval(timer)
+    }
 }
 
 /* Add event listener to displaybox and execute a function when the user toggles the appropriate box */
