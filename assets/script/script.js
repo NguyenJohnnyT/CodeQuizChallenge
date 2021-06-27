@@ -8,7 +8,7 @@ var but1 = document.getElementById('btn1');
 var but2 = document.getElementById('btn2');
 var but3 = document.getElementById('btn3');
 var but4 = document.getElementById('btn4');
-var hsDisplay = document.getElementById('highScoreDisplay');
+var hsDisplay = document.getElementById('buttonHS');
 var listHS = document.getElementById('listHighScores');
 
 //declare timerRunning so user can't click start multiple times.
@@ -31,6 +31,16 @@ var questAndAns = {
     'Question4': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'], 
 
     'Question5': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],  
+
+    'Question6': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+
+    'Question7': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+
+    'Question8': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+
+    'Question9': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+
+    'Question10': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3']
 }
 
 console.log(questAndAns)
@@ -42,13 +52,14 @@ var currentQuestions = Object.getOwnPropertyNames(questAndAns);
 var chooseAButton = ['btn1', 'btn2', 'btn3', 'btn4'];
 
 function startGame () {
-    questCount.textContent = questionsAsked
     scoreCountdown = 60;
     questionsAsked = 5;
+    questCount.textContent = questionsAsked
     btn1.disabled = false;
     btn2.disabled = false;
     btn3.disabled = false;
     btn4.disabled = false;
+    hsDisplay.disabled = true;
     startTimer();
     if (questionsAsked > 0){
         displayQuestion()
@@ -90,7 +101,7 @@ function displayAnswers (chooseAButton, currentAns) {
         button.textContent = buttonAnswer; //displays popped element
     })
 }
-/** Button click events.
+/** Give meaning to buttons clicked on page!
  * Functions: userClickBtn
  */
 function userClickBtn (event) {
@@ -110,7 +121,7 @@ function userClickBtn (event) {
 };
 
 /** 
- * checks the answer that the User selected.
+ * checks the answer that the User selected and update the score and questions Left appropriately.
  * Functions: checkAnswer
 */
 //The browser will compare the answer selected with the array of answers corrosponding with questAndAns property.
@@ -131,8 +142,9 @@ function checkAnswer(buttonID) {
 }
 
 /**
- * Display the score, 
- * functions: startTimer, checkIfZero, gameEnd
+ * Show the user the time left.
+ * functions: startTimer, checkIfZero, 
+ * new variables: timerRunning
  */
 var timerRunning = false; 
 
@@ -144,18 +156,27 @@ function startTimer () {
         timer = setInterval(function () {
             scoreCountdown--;
             scoreCount.textContent = scoreCountdown;
-            checkIfZero();
         }, 1000)
+        checkTimer = setInterval(function (){
+            //constantly checks if the timer or questionsasked reaches 0
+            //prevents user from accidentally double clicking on last question
+            checkIfZero();
+        },50)
     }
 }
 
 function checkIfZero () {
     if (scoreCountdown <= 0 || questionsAsked === 0) {
         clearInterval(timer)
+        clearInterval(checkTimer);
         gameEnd()
     }
 }
 
+/**
+ * Resets the webpage to a base template
+ * Functions: gameEnd, pageLoad
+ */
 function gameEnd () { //resets the board
     pageLoad()
     timerRunning = false;
@@ -178,6 +199,7 @@ function pageLoad () {
     btn3.textContent = 'Play'
     btn4.disabled = true;
     btn4.textContent = 'Game!'
+    hsDisplay.disabled = false;
 }
 
 /* Add event listener to displaybox and execute a function when the user toggles the appropriate box */
