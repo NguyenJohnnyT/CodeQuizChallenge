@@ -1,11 +1,11 @@
 //Assigning variables to HTML elements
 var scoreCount = document.getElementById('scoreCountdown');
 var qDisplay = document.getElementById('questionDisplay');
-var answerBox = document.getElementById('answerBox');
-var but1 = document.getElementById('btn1');
-var but2 = document.getElementById('btn2');
-var but3 = document.getElementById('btn3');
-var but4 = document.getElementById('btn4');
+// var answerBox = document.getElementById('answerBox');
+// var but1 = document.getElementById('btn1');
+// var but2 = document.getElementById('btn2');
+// var but3 = document.getElementById('btn3');
+// var but4 = document.getElementById('btn4');
 var hsDisplay = document.getElementById('highScoreDisplay');
 var listHS = document.getElementById('listHighScores');
 
@@ -75,6 +75,8 @@ function userClickBtn (event) {
         //obtains the ID of the button that was clicked.
         var buttonID = element.getAttribute('id');
         checkAnswer(buttonID)
+    } else if (element.matches('#buttonStart')) {
+        startTimer();
     }
 };
 
@@ -87,9 +89,25 @@ function checkAnswer(buttonID) {
     } else {console.log('Incorrect')}
 }
 
+//declare timerRunning so user can't 
+var timerRunning = false;
+scoreCountdown = 60;
 
+function startTimer () {
+    if (timerRunning === false) {
+        timerRunning = true;
+        scoreCount.textContent = scoreCountdown;
+        setInterval(function () {
+            scoreCountdown -= 1;
+            scoreCount.textContent = scoreCountdown;
+        }, 1000)
+    }
+
+
+
+}
 
 /* Add event listener to displaybox and execute a function when the user toggles the appropriate box */
 document.addEventListener('click', userClickBtn);
 
-displayQuestion()
+// displayQuestion()
