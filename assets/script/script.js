@@ -132,12 +132,10 @@ function checkAnswer(buttonID) {
         //checking if the string of the answer matches with obj.property[0].  Correct answer is always indexed at 0.
         console.log('Correct!')
         questionsAsked--;
-        questCount.textContent = questionsAsked
     } else {
         console.log('Incorrect');
-        questionsAsked--;
-        questCount.textContent = questionsAsked
         scoreCountdown -= 5;
+        questionsAsked--;
     }
 }
 
@@ -152,10 +150,10 @@ function startTimer () {
     //check if timer is running already
     if (timerRunning === false) {
         timerRunning = true;
-        scoreCount.textContent = scoreCountdown;
+        // scoreCount.textContent = scoreCountdown;
         timer = setInterval(function () {
             scoreCountdown--;
-            scoreCount.textContent = scoreCountdown;
+            // scoreCount.textContent = scoreCountdown;
         }, 1000)
         checkTimer = setInterval(function (){
             //constantly checks if the timer or questionsasked reaches 0
@@ -166,10 +164,12 @@ function startTimer () {
 }
 
 function checkIfZero () {
+    questCount.textContent = questionsAsked;
+    scoreCount.textContent = scoreCountdown;
     if (scoreCountdown <= 0 || questionsAsked === 0) {
-        clearInterval(timer)
+        clearInterval(timer);
         clearInterval(checkTimer);
-        gameEnd()
+        setTimeout(gameEnd, 50) //lets the browser update the score/questions left before displaying the gameEnd prompts
     }
 }
 
