@@ -36,12 +36,10 @@ function storeHS () {
 
 function clearHS () {
     listLi = document.querySelectorAll('li');
-    console.log(listLi);
     for (i = listLi.length-1; i >= 0; i--) {
         listItem = listLi[i];
         listItem.remove()
     }
-    console.log(listLi);
     highScores = [];
     storeHS();
     updateHighScore()
@@ -74,7 +72,45 @@ function updateHighScore (userPrompt) {
         }
     } else {
         userName = userPrompt.trim()
+        scoreAdded = false;
+        for (i = 0; i < highScores.length; i++) {
+            //compares the userScore to each score in highScores, starting from the highest score
+            scoreOne1 = highScores[i].charAt(highScores[i].length-2);
+            scoreOne2 = highScores[i].charAt(highScores[i].length-1);
+            topScore = ("" + scoreOne1 + scoreOne2);
+            if (scoreCountdown > parseInt(topScore)) {
+                highScores.splice(i, 0, (userName + ' - ' + scoreCountdown))
+                scoreAdded = true;
+                break;
+            }
+        }
 
+        if (scoreAdded === false && highScores.length < 10) {
+            //adds userScore to the end of the list, if able
+            newScore = [userName + ' - ' + scoreCountdown]
+            console.log(newScore);
+            highScores = highScores.concat(newScore);
+            console.log(highScores);
+            scoreAdded = true;
+        }
+
+        if (scoreAdded === false && highScores.length === 10) {
+            //if list is full and score too low, alerts user
+            alert("Sorry, your score is too low and the leaderboard is full!")
+        }
+        listLi = document.querySelectorAll('li')
+        for (i = listLi.length-1; i >= 0; i--) {
+            //removes items in the list
+            listItem = listLi[i];
+            listItem.remove()
+        }
+        for (i=0; i < highScores.length; i++) {
+            //rebuilds the list with updated highScores
+            var highScore = highScores[i]
+            var li = document.createElement('li');
+            li.textContent = highScore;
+            listHS.appendChild(li);
+        }
     }
 }
 
