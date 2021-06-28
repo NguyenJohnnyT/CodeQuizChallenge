@@ -18,7 +18,7 @@ scoreCountdown = 60; //time left shown on webpage.
 questionsAsked = 5 //how many questions the user will be asked
 
 //declare high scores
-highScores = ['Johnny - 60'];
+highScores = [];
 
 function init() {
     pageLoad ()
@@ -26,12 +26,12 @@ function init() {
     if (storedHS !== null) {
         highScores = storedHS
     }
-    storeHS()
-    updateHighScore()
+    console.log(highScores)
+    renderHighScores()
 }
 
 function storeHS () {
-    localStorage.setItem('highscores', JSON.stringify(highScores));
+    localStorage.setItem('highScores', JSON.stringify(highScores));
 }
 
 function clearHS () {
@@ -61,18 +61,31 @@ function hideHighScore () {
         // hsBtn.textContent = 'Return';
 }
 
+function renderHighScores () {
+    listLi = document.querySelectorAll('li')
+    for (i = listLi.length-1; i >= 0; i--) {
+        //removes items in the list
+        listItem = listLi[i];
+        listItem.remove()
+    }
+
+    for (i=0; i < highScores.length; i++) {
+        //rebuilds the list with updated highScores
+        var highScore = highScores[i]
+        var li = document.createElement('li');
+        li.textContent = highScore;
+        listHS.appendChild(li);
+    }
+}
+
 function updateHighScore (userPrompt) {
     //create ordered list based off user scores, with #1 being highest score
-    if (!userPrompt) { //if user decided to not enter an initial, or page just loaded
-        for (i=0; i < highScores.length; i++) {
-            var highScore = highScores[i]
-            var li = document.createElement('li');
-            li.textContent = highScore;
-            listHS.appendChild(li);
-        }
+    if (!userPrompt) { //if user decided to not enter an initial
+        showHighScore()
     } else {
         userName = userPrompt.trim()
         scoreAdded = false;
+
         for (i = 0; i < highScores.length; i++) {
             //compares the userScore to each score in highScores, starting from the highest score
             scoreOne1 = highScores[i].charAt(highScores[i].length-2);
@@ -98,19 +111,9 @@ function updateHighScore (userPrompt) {
             //if list is full and score too low, alerts user
             alert("Sorry, your score is too low and the leaderboard is full!")
         }
-        listLi = document.querySelectorAll('li')
-        for (i = listLi.length-1; i >= 0; i--) {
-            //removes items in the list
-            listItem = listLi[i];
-            listItem.remove()
-        }
-        for (i=0; i < highScores.length; i++) {
-            //rebuilds the list with updated highScores
-            var highScore = highScores[i]
-            var li = document.createElement('li');
-            li.textContent = highScore;
-            listHS.appendChild(li);
-        }
+
+        renderHighScores();
+        storeHS()
     }
 }
 
