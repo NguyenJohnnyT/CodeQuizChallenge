@@ -14,20 +14,54 @@ var hsDisplay = document.getElementById('highScoreDisplay');
 var listHS = document.getElementById('listHighScores');
 
 //declare timerRunning so user can't click start multiple times.
-scoreCountdown = 60; //time left shown on webpage.
-questionsAsked = 5 //how many questions the user will be asked
+var scoreCountdown = 60; //time left shown on webpage.
+var questionsAsked = 5 //how many questions the user will be asked
+var questionsCorrect = 0 //if user answers all questions incorrectly, no score
 
+/*
+Need an object that the program can randomly iterate through to display the property and its contents.
+
+set an object that records all questions and and their array of possible answers --> obj = {Question 1: [Correct Answer, Wrong answer1, Wrong answer2, Wrong answer3], ...}
+*/
+var questAndAns = {
+    'What is the purpose of CSS': ['Styling of webpages', 'Structure of webpage', 'Define the content of webpages',  'Stores data to be accessed'],
+
+    'Question2': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+
+    'Question3': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'], 
+
+    'Question4': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'], 
+
+    'Question5': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],  
+
+    'Question6': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+
+    'Question7': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+
+    'Question8': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+
+    'Question9': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+
+    'Question10': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3']
+}
+
+console.log(questAndAns)
+
+/**
+ * Initialize high scores for local storage.
+ * Functions: init, storeHS, clearHS, showHighScore, hideHighScore, renderHighScore updateHighScore
+ * 
+ */
 //declare high scores
 highScores = [];
 
 function init() {
     pageLoad ()
     var storedHS = JSON.parse(localStorage.getItem("highScores"));
-    if (storedHS !== null) {
+    if (storedHS !== null) { //renders local storage high scores.
         highScores = storedHS
     }
-    console.log(highScores)
-    renderHighScores()
+    renderHighScore()
 }
 
 function storeHS () {
@@ -39,7 +73,7 @@ function clearHS () {
     for (i = listLi.length-1; i >= 0; i--) {
         listItem = listLi[i];
         listItem.remove()
-    }
+    } //removes list of high scores.
     highScores = [];
     storeHS();
     updateHighScore()
@@ -61,7 +95,7 @@ function hideHighScore () {
         // hsBtn.textContent = 'Return';
 }
 
-function renderHighScores () {
+function renderHighScore () {
     listLi = document.querySelectorAll('li')
     for (i = listLi.length-1; i >= 0; i--) {
         //removes items in the list
@@ -112,50 +146,15 @@ function updateHighScore (userPrompt) {
             alert("Sorry, your score is too low and the leaderboard is full!")
         }
 
-        renderHighScores();
+        renderHighScore();
         storeHS()
     }
 }
 
-/*
-Need an object that the program can randomly iterate through to display the property and its contents.
-
-set an object that records all questions and and their array of possible answers --> obj = {Question 1: [Correct Answer, Wrong answer1, Wrong answer2, Wrong answer3], ...}
-*/
-
-var questAndAns = {
-    'What is the purpose of CSS': ['Styling of webpages', 'Structure of webpage', 'Define the content of webpages',  'Stores data to be accessed'],
-
-    'Question2': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
-
-    'Question3': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'], 
-
-    'Question4': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'], 
-
-    'Question5': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],  
-
-    'Question6': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
-
-    'Question7': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
-
-    'Question8': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
-
-    'Question9': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
-
-    'Question10': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3']
-}
-
-console.log(questAndAns)
-
-//Create an array of the property names in questAndAns.  The program will randomly select from this array to display a random question.
-var currentQuestions = Object.getOwnPropertyNames(questAndAns);
-
-//Array of strings matching button IDs.  Used to display answers randomly for function chooseAButtonShuffle(array)
-var chooseAButton = ['btn1', 'btn2', 'btn3', 'btn4'];
-
 function startGame () {
     scoreCountdown = 60;
     questionsAsked = 5;
+    questionsCorrect = 0
     questCount.textContent = questionsAsked
     btn1.disabled = false;
     btn2.disabled = false;
@@ -165,7 +164,7 @@ function startGame () {
     clBtn.disabled= true;
     hideHighScore()
     startTimer();
-    if (questionsAsked > 0){
+    if (questionsAsked > 0) {
         displayQuestion()
     };
 }
@@ -175,10 +174,16 @@ function startGame () {
  * Functions:displayQuestion, chooseAButtonShuffle, displayAnswers
  */
 
+//Create an array of the property names from questAndAns object.  The program will randomly select from this array to display a random question.
+var currentQuestions = Object.getOwnPropertyNames(questAndAns);
+
+//Array of strings matching button IDs.  Used to display answers randomly for function chooseAButtonShuffle(array)
+var chooseAButton = ['btn1', 'btn2', 'btn3', 'btn4'];
+
 function displayQuestion () {
     //Randomly choose an index of currentQuestions to display the appropriate question.
     var indexCQ = Math.floor(Math.random() * currentQuestions.length)
-    currentQuestion = currentQuestions.splice(indexCQ, 1);
+    currentQuestion = currentQuestions.splice(indexCQ, 1); //removes element from curresntQuestions so no repeat questions
     var currentAns = [] //array of answers for currentQuestion
     for (i = 0; i < questAndAns[currentQuestion].length; i++) {
         //making a copy of the answers so displayAnswers doesn't pop the object property's value (an array)
@@ -205,6 +210,7 @@ function displayAnswers (chooseAButton, currentAns) {
         button.textContent = buttonAnswer; //displays popped element
     })
 }
+
 /** Give meaning to buttons clicked on page!
  * Functions: userClickBtn
  */
@@ -212,38 +218,42 @@ function userClickBtn (event) {
     //When user clicks a button, verifies if the answer is correct or not. Then should call another function that changes the score and another function that changes the question.
     var element = event.target;
     if (element.matches('.btn')) {
-        //obtains the ID of the button that was clicked.
+        //clicking one of the answer buttons.  Checks the answer
         var buttonID = element.getAttribute('id');
         checkAnswer(buttonID)
         if (startBtn.disabled === true && questionsAsked > 0) {
             displayQuestion();
         }
     } else if (element.matches('#buttonStart') && startBtn.disabled === false) {
+        //clicking the start button game
         startBtn.disabled = true;
         startGame();
     } else if (element.matches('#clearHS')) {
+        //clicking the clear high score button
         confirmClear = confirm('Are you sure you want to clear the high scores?')
         if (confirmClear) {
             clearHS();
         }
     } else if (element.matches('#buttonHS')) {
+        //clicking the show high score button
         showHighScore()
 
     }
 };
 
 /** 
- * checks the answer that the User selected and update the score and questions Left appropriately.
+ * checks the answer that the User selected and update the score, questions correct, and questions Left appropriately.
  * Functions: checkAnswer
 */
-//The browser will compare the answer selected with the array of answers corrosponding with questAndAns property.
 function checkAnswer(buttonID) {
+    //The browser will compare the answer selected with the array of answers corrosponding with questAndAns property.
     var questionDisplay = qDisplay.textContent;
     var pressedBtn = document.getElementById(buttonID);
     if (pressedBtn.textContent === questAndAns[questionDisplay][0]) { 
         //checking if the string of the answer matches with obj.property[0].  Correct answer is always indexed at 0.
         console.log('Correct!')
         questionsAsked--;
+        questionsCorrect++;
     } else {
         console.log('Incorrect');
         scoreCountdown -= 5;
@@ -292,17 +302,17 @@ function gameEnd () { //resets the board
     timerRunning = false;
     startBtn.disabled = false;
     currentQuestions = Object.getOwnPropertyNames(questAndAns);
-    if (scoreCountdown <= 0) {
-        userAlert = alert('Gameover!  That was rough!  Please try again!')
+    if (scoreCountdown <= 0 || questionsCorrect === 0) {
+        userAlert = alert('Gameover!  Oh no! No questions correct or zero score!  Study harder and try again!');
     } else {
-        userPrompt = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the scoreboard');
+        userPrompt = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the leaderboard!');
         if (userPrompt) {
             updateHighScore(userPrompt);
         }
-        showHighScore();
-        hsBtn.disabled = false;
-        clBtn.disabled = false;
     }
+    showHighScore();
+    hsBtn.disabled = false;
+    clBtn.disabled = false;
 }
 
 function pageLoad () {
@@ -321,5 +331,5 @@ function pageLoad () {
 /* Add event listener to displaybox and execute a function when the user toggles the appropriate box */
 document.addEventListener('click', userClickBtn);
 
-// displayQuestion()
+//startup!
 init();
