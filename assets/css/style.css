@@ -7,7 +7,7 @@ body {
 }
 
 header {
-    min-height: 100px;
+    min-height: 400px;
     min-width: 800px;
     width: 90%;
     margin-left: 5%;
@@ -55,7 +55,7 @@ h2 {
 }
 
 #headerImg {
-    min-width: 400px;
+    max-width: 400px;
 }
 
 #scoreHeader{

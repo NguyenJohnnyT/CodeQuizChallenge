@@ -14,7 +14,10 @@
             <button id='clearHS'>Clear High Scores</button>
             <button id='buttonStart'>Start</button>
         </div>
-        <img id='headerImg' src='./assets/images/placeholder.png' width=100px>
+        <div style="display:flex; flex-direction: column">
+            <img id='headerImg' src='./assets/images/placeholder.png' width=400px style='display:inline'>
+            <h2 id='rightWrong' style="display: none"></h2>
+        </div>
         <div id = 'rightHeader'>
             <div id='scoreHeader'>Score: <span id='scoreCountdown'></span></div>
             <h2>Questions Left: <span id='questionCountdown'></span></h2>

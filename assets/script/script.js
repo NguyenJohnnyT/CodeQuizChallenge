@@ -12,6 +12,7 @@ var but3 = document.getElementById('btn3');
 var but4 = document.getElementById('btn4');
 var hsDisplay = document.getElementById('highScoreDisplay');
 var listHS = document.getElementById('listHighScores');
+var checkmark = document.getElementById('rightWrong');
 
 //declare timerRunning so user can't click start multiple times.
 var scoreCountdown = 60; //time left shown on webpage.
@@ -154,8 +155,11 @@ function updateHighScore (userPrompt) {
 function startGame () {
     scoreCountdown = 60;
     questionsAsked = 5;
-    questionsCorrect = 0
-    questCount.textContent = questionsAsked
+    questionsCorrect = 0;
+    checkmark.innerHTML = '';
+    checkmark.style.display = 'inline';
+    document.getElementById('headerImg').style.width = '200px';
+    questCount.textContent = questionsAsked;
     btn1.disabled = false;
     btn2.disabled = false;
     btn3.disabled = false;
@@ -252,10 +256,12 @@ function checkAnswer(buttonID) {
     if (pressedBtn.textContent === questAndAns[questionDisplay][0]) { 
         //checking if the string of the answer matches with obj.property[0].  Correct answer is always indexed at 0.
         console.log('Correct!')
+        checkmark.innerHTML = (checkmark.innerHTML + '✅')
         questionsAsked--;
         questionsCorrect++;
     } else {
         console.log('Incorrect');
+        checkmark.innerHTML = (checkmark.innerHTML + '❌')
         scoreCountdown -= 5;
         questionsAsked--;
     }
@@ -311,6 +317,8 @@ function gameEnd () { //resets the board
         }
     }
     showHighScore();
+    document.getElementById('headerImg').style.width = '400px';
+    checkmark.style.display = 'none';
     hsBtn.disabled = false;
     clBtn.disabled = false;
 }
