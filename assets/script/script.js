@@ -4,6 +4,7 @@ var questCount = document.getElementById('questionCountdown')
 var qDisplay = document.getElementById('questionDisplay');
 var startBtn = document.getElementById('buttonStart');
 var hsBtn = document.getElementById('buttonHS');
+var clBtn = document.getElementById('clearHS');
 var ansBox = document.getElementById('answerBox');
 var but1 = document.getElementById('btn1');
 var but2 = document.getElementById('btn2');
@@ -17,41 +18,64 @@ scoreCountdown = 60; //time left shown on webpage.
 questionsAsked = 5 //how many questions the user will be asked
 
 //declare high scores
-highScore = [];
+highScores = ['Johnny - 60'];
 
 function init() {
     pageLoad ()
     var storedHS = JSON.parse(localStorage.getItem("highScores"));
     if (storedHS !== null) {
-        highScore = storedHS
+        highScores = storedHS
     }
     storeHS()
+    updateHighScore()
 }
 
 function storeHS () {
-    localStorage.setItem('highscores', JSON.stringify(highScore));
+    localStorage.setItem('highscores', JSON.stringify(highScores));
 }
 
 function clearHS () {
-
+    listLi = document.querySelectorAll('li');
+    console.log(listLi);
+    for (i = listLi.length-1; i >= 0; i--) {
+        listItem = listLi[i];
+        listItem.remove()
+    }
+    console.log(listLi);
+    highScores = [];
+    storeHS();
+    updateHighScore()
 }
 
 function showHighScore () {
-    if (qDisplay.style.display === "none") {
-        qDisplay.style.display = 'inline';
-        ansBox.style.display = 'flex';
-        hsDisplay.style.display='none';
-        hsBtn.textContent = 'View High Scores';
-    } else {
-        qDisplay.style.display = "none";
-        ansBox.style.display = "none";
+    if (qDisplay.style.display === "inline") {
+        qDisplay.style.display = 'none';
+        ansBox.style.display = 'none';
         hsDisplay.style.display='inline';
-        hsBtn.textContent = 'Return';
-    }
+        hsBtn.textContent = 'View High Scores';
+    } else {hideHighScore()}
+}
+
+function hideHighScore () {
+        qDisplay.style.display = "inline";
+        ansBox.style.display = "flex";
+        hsDisplay.style.display='none';
+        // hsBtn.textContent = 'Return';
 }
 
 function updateHighScore (userPrompt) {
+    //create ordered list based off user scores, with #1 being highest score
+    if (!userPrompt) { //if user decided to not enter an initial, or page just loaded
+        for (i=0; i < highScores.length; i++) {
+            var highScore = highScores[i]
+            var li = document.createElement('li');
+            li.textContent = highScore;
+            listHS.appendChild(li);
+        }
+    } else {
+        userName = userPrompt.trim()
 
+    }
 }
 
 /*
@@ -98,7 +122,9 @@ function startGame () {
     btn2.disabled = false;
     btn3.disabled = false;
     btn4.disabled = false;
-    hsDisplay.disabled = true;
+    hsBtn.disabled = true;
+    clBtn.disabled= true;
+    hideHighScore()
     startTimer();
     if (questionsAsked > 0){
         displayQuestion()
@@ -159,7 +185,7 @@ function userClickBtn (event) {
     } else if (element.matches('#clearHS')) {
         confirmClear = confirm('Are you sure you want to clear the high scores?')
         if (confirmClear) {
-            localStorage.setItem('highscores', []);
+            clearHS();
         }
     } else if (element.matches('#buttonHS')) {
         showHighScore()
@@ -231,8 +257,12 @@ function gameEnd () { //resets the board
         userAlert = alert('Gameover!  That was rough!  Please try again!')
     } else {
         userPrompt = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the scoreboard');
-        updateHighScore(userPrompt);
+        if (userPrompt) {
+            updateHighScore(userPrompt);
+        }
         showHighScore();
+        hsBtn.disabled = false;
+        clBtn.disabled = false;
     }
 }
 
@@ -254,4 +284,3 @@ document.addEventListener('click', userClickBtn);
 
 // displayQuestion()
 init();
-pageLoad();
