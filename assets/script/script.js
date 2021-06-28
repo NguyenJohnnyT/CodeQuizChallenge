@@ -2,18 +2,57 @@
 var scoreCount = document.getElementById('scoreCountdown');
 var questCount = document.getElementById('questionCountdown')
 var qDisplay = document.getElementById('questionDisplay');
-var startBtn = document.getElementById('buttonStart')
-// var answerBox = document.getElementById('answerBox');
+var startBtn = document.getElementById('buttonStart');
+var hsBtn = document.getElementById('buttonHS');
+var ansBox = document.getElementById('answerBox');
 var but1 = document.getElementById('btn1');
 var but2 = document.getElementById('btn2');
 var but3 = document.getElementById('btn3');
 var but4 = document.getElementById('btn4');
-var hsDisplay = document.getElementById('buttonHS');
+var hsDisplay = document.getElementById('highScoreDisplay');
 var listHS = document.getElementById('listHighScores');
 
 //declare timerRunning so user can't click start multiple times.
 scoreCountdown = 60; //time left shown on webpage.
 questionsAsked = 5 //how many questions the user will be asked
+
+//declare high scores
+highScore = [];
+
+function init() {
+    pageLoad ()
+    var storedHS = JSON.parse(localStorage.getItem("highScores"));
+    if (storedHS !== null) {
+        highScore = storedHS
+    }
+    storeHS()
+}
+
+function storeHS () {
+    localStorage.setItem('highscores', JSON.stringify(highScore));
+}
+
+function clearHS () {
+
+}
+
+function showHighScore () {
+    if (qDisplay.style.display === "none") {
+        qDisplay.style.display = 'inline';
+        ansBox.style.display = 'flex';
+        hsDisplay.style.display='none';
+        hsBtn.textContent = 'View High Scores';
+    } else {
+        qDisplay.style.display = "none";
+        ansBox.style.display = "none";
+        hsDisplay.style.display='inline';
+        hsBtn.textContent = 'Return';
+    }
+}
+
+function updateHighScore (userPrompt) {
+
+}
 
 /*
 Need an object that the program can randomly iterate through to display the property and its contents.
@@ -117,6 +156,14 @@ function userClickBtn (event) {
     } else if (element.matches('#buttonStart') && startBtn.disabled === false) {
         startBtn.disabled = true;
         startGame();
+    } else if (element.matches('#clearHS')) {
+        confirmClear = confirm('Are you sure you want to clear the high scores?')
+        if (confirmClear) {
+            localStorage.setItem('highscores', []);
+        }
+    } else if (element.matches('#buttonHS')) {
+        showHighScore()
+
     }
 };
 
@@ -150,10 +197,8 @@ function startTimer () {
     //check if timer is running already
     if (timerRunning === false) {
         timerRunning = true;
-        // scoreCount.textContent = scoreCountdown;
         timer = setInterval(function () {
             scoreCountdown--;
-            // scoreCount.textContent = scoreCountdown;
         }, 1000)
         checkTimer = setInterval(function (){
             //constantly checks if the timer or questionsasked reaches 0
@@ -183,9 +228,11 @@ function gameEnd () { //resets the board
     startBtn.disabled = false;
     currentQuestions = Object.getOwnPropertyNames(questAndAns);
     if (scoreCountdown <= 0) {
-        user = alert('Gameover!  That was rough!  Please try again!')
+        userAlert = alert('Gameover!  That was rough!  Please try again!')
     } else {
-        user = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the scoreboard')
+        userPrompt = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the scoreboard');
+        updateHighScore(userPrompt);
+        showHighScore();
     }
 }
 
@@ -206,4 +253,5 @@ function pageLoad () {
 document.addEventListener('click', userClickBtn);
 
 // displayQuestion()
+init();
 pageLoad();

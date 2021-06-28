@@ -40,11 +40,17 @@ h2 {
 
 #buttonHS {
     margin: 40px;
+    margin-bottom: 10px;
     height: 40px;
 }
 
+#clearHS {
+    margin:20px;
+}
+
 #buttonStart {
-    width: 40px;
+    width: auto;
+    padding:20px;
 }
 
 #headerImg {
@@ -72,6 +78,7 @@ h2 {
 }
 
 #questionDisplay {
+    display: inline;
     margin-top: 2px;
     margin-bottom: 10px;
     margin-left: 12px;
