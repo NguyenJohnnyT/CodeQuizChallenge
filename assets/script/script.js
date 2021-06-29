@@ -6,6 +6,7 @@ var startBtn = document.getElementById('buttonStart');
 var hsBtn = document.getElementById('buttonHS');
 var clBtn = document.getElementById('clearHS');
 var ansBox = document.getElementById('answerBox');
+var btns = document.querySelectorAll('.btn');
 var but1 = document.getElementById('btn1');
 var but2 = document.getElementById('btn2');
 var but3 = document.getElementById('btn3');
@@ -117,38 +118,38 @@ function updateHighScore (userPrompt) {
     //create ordered list based off user scores, with #1 being highest score
     if (!userPrompt) { //if user decided to not enter an initial
         showHighScore()
-    } else {
-        userName = userPrompt.trim()
-        scoreAdded = false;
+    }   else {
+            userName = userPrompt.trim()
+            scoreAdded = false;
 
-        for (i = 0; i < highScores.length; i++) {
-            //compares the userScore to each score in highScores, starting from the highest score
-            scoreOne1 = highScores[i].charAt(highScores[i].length-2);
-            scoreOne2 = highScores[i].charAt(highScores[i].length-1);
-            topScore = ("" + scoreOne1 + scoreOne2);
-            if (scoreCountdown > parseInt(topScore)) {
-                highScores.splice(i, 0, (userName + ' - ' + scoreCountdown))
-                scoreAdded = true;
-                break;
+            for (i = 0; i < highScores.length; i++) {
+                //compares the userScore to each score in highScores, starting from the highest score
+                scoreOne1 = highScores[i].charAt(highScores[i].length-2);
+                scoreOne2 = highScores[i].charAt(highScores[i].length-1);
+                topScore = ("" + scoreOne1 + scoreOne2);
+                if (scoreCountdown > parseInt(topScore)) {
+                    highScores.splice(i, 0, (userName + ' - ' + scoreCountdown))
+                    scoreAdded = true;
+                    break;
+                }
             }
-        }
 
-        if (scoreAdded === false && highScores.length < 10) {
-            //adds userScore to the end of the list, if able
-            newScore = [userName + ' - ' + scoreCountdown]
-            console.log(newScore);
-            highScores = highScores.concat(newScore);
-            console.log(highScores);
-            scoreAdded = true;
-        }
+            if (scoreAdded === false && highScores.length < 10) {
+                //adds userScore to the end of the list, if able
+                newScore = [userName + ' - ' + scoreCountdown]
+                console.log(newScore);
+                highScores = highScores.concat(newScore);
+                console.log(highScores);
+                scoreAdded = true;
+            }
 
-        if (scoreAdded === false && highScores.length === 10) {
-            //if list is full and score too low, alerts user
-            alert("Sorry, your score is too low and the leaderboard is full!")
-        }
+            if (scoreAdded === false && highScores.length === 10) {
+                //if list is full and score too low, alerts user
+                alert("Sorry, your score is too low and the leaderboard is full!")
+            }
 
-        renderHighScore();
-        storeHS()
+            renderHighScore();
+            storeHS()
     }
 }
 
@@ -160,10 +161,9 @@ function startGame () {
     checkmark.style.display = 'inline';
     document.getElementById('headerImg').style.width = '200px';
     questCount.textContent = questionsAsked;
-    btn1.disabled = false;
-    btn2.disabled = false;
-    btn3.disabled = false;
-    btn4.disabled = false;
+    btns.forEach (function (btn) {
+        btn.disabled = false;
+    });
     hsBtn.disabled = true;
     clBtn.disabled= true;
     hideHighScore()
@@ -312,9 +312,10 @@ function gameEnd () { //resets the board
         userAlert = alert('Gameover!  Oh no! No questions correct or zero score!  Study harder and try again!');
     } else {
         userPrompt = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the leaderboard!');
-        if (userPrompt) {
-            updateHighScore(userPrompt);
+        while (userPrompt.trim() === "") {
+            userPrompt = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the leaderboard!');
         }
+        updateHighScore(userPrompt)
     }
     showHighScore();
     document.getElementById('headerImg').style.width = '400px';
