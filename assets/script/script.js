@@ -311,9 +311,18 @@ function gameEnd () { //resets the board
     if (scoreCountdown <= 0 || questionsCorrect === 0) {
         userAlert = alert('Gameover!  Oh no! No questions correct or zero score!  Study harder and try again!');
     } else {
-        userPrompt = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the leaderboard!');
+        userPrompt = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your name to submit into the leaderboard!');
         while (userPrompt.trim() === "") {
-            userPrompt = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your initials to submit into the leaderboard!');
+            userPrompt = prompt('Please enter something!!');
+            console.log(userPrompt);
+            if (userPrompt === null) {
+                userPrompt = false;
+                userConfirm = confirm('Are you sure you want to skip recording your score?')
+                    if (userConfirm) {
+                        alert("No score recorded");
+                        break
+                    } else {userPrompt = ""}
+            }
         }
         updateHighScore(userPrompt)
     }
