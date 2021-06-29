@@ -26,28 +26,28 @@ Need an object that the program can randomly iterate through to display the prop
 set an object that records all questions and and their array of possible answers --> obj = {Question 1: [Correct Answer, Wrong answer1, Wrong answer2, Wrong answer3], ...}
 */
 var questAndAns = {
-    'What is the purpose of CSS': ['Styling of webpages', 'Structure of webpage', 'Define the content of webpages',  'Stores data to be accessed'],
+    'What is the purpose of CSS?': ['Styling of webpages', 'Structure of webpage', 'Define the content of webpages',  'Stores data to be accessed'],
 
-    'Question2': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+    'What is the strict equality operator?': ['===', '==', '=', '??'],
 
-    'Question3': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'], 
+    'Of the possible answers, what should you do if you don\'t remember what some code does?': ['Look up documentation', 'Give up', 'Input different guesses', 'Cry'], 
 
-    'Question4': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'], 
+    'What does HTML stand for?': ['HyperText Markup Language', 'Header Template Markup Language', 'HyperLink Method Loop', 'How To Make Loop?'], 
 
-    'Question5': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],  
+    'If you need the user to be able to interact with a  webpage, you probably need--': ['JavaScript', 'CSS', 'HTML', 'SQL'],  
 
-    'Question6': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+    'What is jQuery?': ['A JavaScript Library', 'A question about JavaScript', 'An alternate language to JavaScript', 'A closed-sourced software'],
 
-    'Question7': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+    'An object can be defined with which brackets in JavaScript?': ['Curly brackets {}', 'Square Brackets []', 'Round Brackets ()', 'Colons ::'],
 
-    'Question8': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+    'What does an object contain?': ['All answers are correct', 'Methods', 'Objects', 'Key-Values'],
 
-    'Question9': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3'],
+    'How can Bootstrap aid the web developer?': ['Easily help construct the webpage layout', 'Calculate the sum of two integers', 'Helps tie your boots', 'Writes all code for you'],
 
-    'Question10': ['Correct Answer', 'WrongAnswer1', 'WrongAnswer2', 'WrongAnswer3']
+    'Fill in the blank: In CSS, we refer to an ID attribute using the ___ prefix.': ['#', '.', '##', '..']
 }
 
-console.log(questAndAns)
+// console.log(questAndAns)
 
 /**
  * Initialize high scores for local storage.
@@ -137,9 +137,9 @@ function updateHighScore (userPrompt) {
             if (scoreAdded === false && highScores.length < 10) {
                 //adds userScore to the end of the list, if able
                 newScore = [userName + ' - ' + scoreCountdown]
-                console.log(newScore);
+                // console.log(newScore);
                 highScores = highScores.concat(newScore);
-                console.log(highScores);
+                // console.log(highScores);
                 scoreAdded = true;
             }
 
@@ -255,12 +255,12 @@ function checkAnswer(buttonID) {
     var pressedBtn = document.getElementById(buttonID);
     if (pressedBtn.textContent === questAndAns[questionDisplay][0]) { 
         //checking if the string of the answer matches with obj.property[0].  Correct answer is always indexed at 0.
-        console.log('Correct!')
+        // console.log('Correct!')
         checkmark.innerHTML = (checkmark.innerHTML + '✅')
         questionsAsked--;
         questionsCorrect++;
     } else {
-        console.log('Incorrect');
+        // console.log('Incorrect');
         checkmark.innerHTML = (checkmark.innerHTML + '❌')
         scoreCountdown -= 5;
         questionsAsked--;
@@ -314,7 +314,7 @@ function gameEnd () { //resets the board
         userPrompt = prompt('Game Over! Your score is ' + scoreCountdown + '. Please enter your name to submit into the leaderboard!');
         while (userPrompt.trim() === "") {
             userPrompt = prompt('Please enter something!!');
-            console.log(userPrompt);
+            // console.log(userPrompt);
             if (userPrompt === null) {
                 userPrompt = false;
                 userConfirm = confirm('Are you sure you want to skip recording your score?')
