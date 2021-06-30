@@ -11,6 +11,7 @@ Access via this [link](https://nguyenjohnnyt.github.io/CodeQuizChallenge/) (http
 
 ## Usage
 Initial startup:
+
 <img src="./assets/images/startUp.png" width='550px' alt="base website">
 
 Each question has four answers.  Choose the correct answer to move on to the next question:

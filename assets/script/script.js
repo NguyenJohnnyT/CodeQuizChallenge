@@ -40,11 +40,11 @@ var questAndAns = {
 
     'An object can be defined with which brackets in JavaScript?': ['Curly brackets {}', 'Square Brackets []', 'Round Brackets ()', 'Colons ::'],
 
-    'What does an object contain?': ['All answers are correct', 'Methods', 'Objects', 'Key-Values'],
+    'What can an object contain?': ['All answers are correct', 'Methods', 'Objects', 'Key-Values'],
 
     'How can Bootstrap aid the web developer?': ['Easily help construct the webpage layout', 'Calculate the sum of two integers', 'Helps tie your boots', 'Writes all code for you'],
 
-    'Fill in the blank: In CSS, we refer to an ID attribute using the ___ prefix.': ['#', '.', '##', '..']
+    'Fill in the blank: In CSS, we refer to an ID attribute using the ___ prefix.': ['#', '. (one period)', '##', '.. (two periods)']
 }
 
 // console.log(questAndAns)
